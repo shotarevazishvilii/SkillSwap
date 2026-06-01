@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { MarketplaceSkill, MarketplaceUser } from "@/features/marketplace/types";
+import { SendRequestDialog } from "@/features/requests/components/send-request-dialog";
 import { formatInitials } from "@/lib/utils";
 
 function SkillBadges({ emptyLabel, skills }: { emptyLabel: string; skills: MarketplaceSkill[] }) {
@@ -58,10 +59,16 @@ export function MarketplaceUserCard({ user }: { user: MarketplaceUser }) {
           <SkillBadges emptyLabel="No learning skills listed." skills={user.learningSkills} />
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="grid gap-2 sm:grid-cols-2">
         <Button asChild className="w-full" variant="outline">
           <Link href={`/dashboard/marketplace/${user.id}`}>View Profile</Link>
         </Button>
+        <SendRequestDialog
+          buttonClassName="w-full"
+          receiverId={user.id}
+          receiverName={user.fullName}
+          skills={user.teachingSkills.map((skill) => ({ id: skill.skillId, name: skill.name }))}
+        />
       </CardFooter>
     </Card>
   );

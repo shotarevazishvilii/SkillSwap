@@ -21,6 +21,7 @@ import type {
   MarketplaceTeachingSkillRow,
   MarketplaceUser,
 } from "@/features/marketplace/types";
+import { SendRequestDialog } from "@/features/requests/components/send-request-dialog";
 import { createClient } from "@/lib/supabase/client";
 import { formatInitials } from "@/lib/utils";
 
@@ -196,6 +197,15 @@ export function MarketplaceProfilePage() {
                   <p className="text-muted-foreground mt-4 max-w-3xl text-sm leading-6">
                     {profile.bio || "This member has not added a bio yet."}
                   </p>
+                  <SendRequestDialog
+                    buttonClassName="mt-5 w-full sm:w-fit"
+                    receiverId={profile.id}
+                    receiverName={profile.fullName}
+                    skills={profile.teachingSkills.map((skill) => ({
+                      id: skill.skillId,
+                      name: skill.name,
+                    }))}
+                  />
                 </div>
               </div>
             </CardHeader>

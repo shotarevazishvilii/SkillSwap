@@ -48,6 +48,58 @@ export type Database = {
         };
         Relationships: [];
       };
+      learning_requests: {
+        Row: {
+          created_at: string;
+          id: string;
+          message: string | null;
+          receiver_id: string;
+          sender_id: string;
+          skill_id: string;
+          status: Database["public"]["Enums"]["learning_request_status"];
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          message?: string | null;
+          receiver_id: string;
+          sender_id: string;
+          skill_id: string;
+          status?: Database["public"]["Enums"]["learning_request_status"];
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          message?: string | null;
+          receiver_id?: string;
+          sender_id?: string;
+          skill_id?: string;
+          status?: Database["public"]["Enums"]["learning_request_status"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "learning_requests_receiver_id_fkey";
+            columns: ["receiver_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "learning_requests_sender_id_fkey";
+            columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "learning_requests_skill_id_fkey";
+            columns: ["skill_id"];
+            isOneToOne: false;
+            referencedRelation: "skills";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       matches: {
         Row: {
           compatibility_score: number;
@@ -397,6 +449,7 @@ export type Database = {
       };
     };
     Enums: {
+      learning_request_status: "pending" | "accepted" | "rejected" | "cancelled";
       match_status: "pending" | "accepted" | "rejected";
       session_status: "scheduled" | "completed" | "cancelled";
     };

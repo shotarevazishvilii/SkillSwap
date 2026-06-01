@@ -14,6 +14,7 @@ import {
   getCompatibilityLabel,
 } from "@/features/matching/lib/compatibility";
 import type { MatchProfile, MatchRecommendation, MatchSkill } from "@/features/matching/types";
+import { SendRequestDialog } from "@/features/requests/components/send-request-dialog";
 import { createClient } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/types";
 import { formatInitials } from "@/lib/utils";
@@ -415,10 +416,18 @@ function MatchCard({
             ))}
           </ul>
         </div>
-        <Button className="mt-auto w-full" disabled={isSaved || isSaving} onClick={onSave}>
-          <Save aria-hidden="true" className="size-4" />
-          {isSaved ? "Saved" : isSaving ? "Saving..." : "Save Match"}
-        </Button>
+        <div className="mt-auto grid gap-2 sm:grid-cols-2">
+          <Button className="w-full" disabled={isSaved || isSaving} onClick={onSave}>
+            <Save aria-hidden="true" className="size-4" />
+            {isSaved ? "Saved" : isSaving ? "Saving..." : "Save Match"}
+          </Button>
+          <SendRequestDialog
+            buttonClassName="w-full"
+            receiverId={match.candidate.id}
+            receiverName={match.candidate.fullName}
+            skills={match.candidate.teachingSkills}
+          />
+        </div>
       </CardContent>
     </Card>
   );

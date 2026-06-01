@@ -1,6 +1,7 @@
 import {
   BookOpen,
   CalendarDays,
+  Inbox,
   Home,
   MessageSquare,
   Search,
@@ -21,6 +22,7 @@ export const dashboardNavigationItems = [
   { href: "/dashboard/skills", icon: BookOpen, label: "Skills" },
   { href: "/dashboard/marketplace", icon: Search, label: "Marketplace" },
   { href: "/dashboard/matches", icon: Sparkles, label: "Matches" },
+  { href: "/dashboard/requests", icon: Inbox, label: "Requests" },
   { href: "/dashboard/messages", icon: MessageSquare, label: "Messages" },
   { href: "/dashboard/sessions", icon: CalendarDays, label: "Sessions" },
 ] satisfies NavigationItem[];
@@ -31,6 +33,7 @@ export const dashboardPageTitles = {
   "/dashboard/skills": "Skills",
   "/dashboard/marketplace": "Marketplace",
   "/dashboard/matches": "Matches",
+  "/dashboard/requests": "Requests",
   "/dashboard/messages": "Messages",
   "/dashboard/sessions": "Sessions",
 } as const;
