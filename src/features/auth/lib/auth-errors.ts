@@ -17,7 +17,7 @@ export function getAuthErrorMessage(error: AuthErrorLike | null | undefined) {
   }
 
   if (message.includes("already registered") || message.includes("already exists")) {
-    return "An account with this email already exists. Try signing in instead.";
+    return "This email is already registered. Please sign in instead.";
   }
 
   if (message.includes("email not confirmed")) {

@@ -54,9 +54,7 @@ export function MarketingNavbar() {
     };
   }, []);
 
-  const visibleLinks = isAuthenticated
-    ? [publicLinks[0], { href: "/dashboard", label: "Dashboard" }]
-    : publicLinks;
+  const visibleLinks = isAuthenticated ? [{ href: "/dashboard", label: "Dashboard" }] : publicLinks;
 
   return (
     <header className="bg-background/90 sticky top-0 z-40 border-b backdrop-blur">
@@ -94,7 +92,7 @@ export function MarketingNavbar() {
               </Button>
             </form>
           ) : (
-            <Button asChild size="sm">
+            <Button asChild className="md:hidden" size="sm">
               <Link href="/auth/sign-up">Sign up</Link>
             </Button>
           )}
