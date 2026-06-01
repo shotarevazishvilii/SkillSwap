@@ -1,10 +1,5 @@
-import { DashboardPageShell } from "@/components/dashboard/dashboard-page-shell";
+import { LearningDashboard } from "@/features/dashboard/components/learning-dashboard";
 
 export default function DashboardPage() {
-  return (
-    <DashboardPageShell
-      description="Review your SkillSwap activity, upcoming sessions, and next steps."
-      title="Dashboard"
-    />
-  );
+  return <LearningDashboard />;
 }
