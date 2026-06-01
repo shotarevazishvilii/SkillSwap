@@ -1,4 +1,5 @@
 import {
+  BookOpen,
   CalendarDays,
   Home,
   MessageSquare,
@@ -16,6 +17,7 @@ export type NavigationItem = {
 export const dashboardNavigationItems = [
   { href: "/dashboard", icon: Home, label: "Dashboard" },
   { href: "/dashboard/profile", icon: UserRound, label: "Profile" },
+  { href: "/dashboard/skills", icon: BookOpen, label: "Skills" },
   { href: "/dashboard/matches", icon: Sparkles, label: "Matches" },
   { href: "/dashboard/messages", icon: MessageSquare, label: "Messages" },
   { href: "/dashboard/sessions", icon: CalendarDays, label: "Sessions" },
@@ -24,6 +26,7 @@ export const dashboardNavigationItems = [
 export const dashboardPageTitles = {
   "/dashboard": "Dashboard",
   "/dashboard/profile": "Profile",
+  "/dashboard/skills": "Skills",
   "/dashboard/matches": "Matches",
   "/dashboard/messages": "Messages",
   "/dashboard/sessions": "Sessions",
