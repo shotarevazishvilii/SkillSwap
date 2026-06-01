@@ -1,10 +1,5 @@
-import { DashboardPageShell } from "@/components/dashboard/dashboard-page-shell";
+import { ProfileManagement } from "@/features/profile/components/profile-management";
 
 export default function ProfilePage() {
-  return (
-    <DashboardPageShell
-      description="Manage the public profile learners and mentors will see."
-      title="Profile"
-    />
-  );
+  return <ProfileManagement />;
 }
