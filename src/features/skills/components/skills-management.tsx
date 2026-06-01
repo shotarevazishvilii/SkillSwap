@@ -50,7 +50,7 @@ type UserSkill = {
 };
 
 const teachingLevels = ["beginner", "intermediate", "advanced", "expert"] satisfies TeachingLevel[];
-const learningLevels = ["beginner", "intermediate", "advanced"] satisfies LearningLevel[];
+const learningLevels = ["beginner", "intermediate", "advanced", "expert"] satisfies LearningLevel[];
 
 function formatLevel(level: string) {
   return level.charAt(0).toUpperCase() + level.slice(1);

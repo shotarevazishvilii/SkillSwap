@@ -59,7 +59,7 @@ type SkillItem = {
 };
 
 const teachingLevels = ["beginner", "intermediate", "advanced", "expert"] satisfies TeachingLevel[];
-const learningLevels = ["beginner", "intermediate", "advanced"] satisfies LearningLevel[];
+const learningLevels = ["beginner", "intermediate", "advanced", "expert"] satisfies LearningLevel[];
 
 function emptyToNull(value: string | undefined) {
   const trimmed = value?.trim() ?? "";

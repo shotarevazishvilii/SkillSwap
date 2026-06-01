@@ -1,9 +1,30 @@
 const fallbackMessage = "We could not complete your request. Please try again.";
 
+export const existingAccountMessage =
+  "This email is already registered. Please sign in instead.";
+
 type AuthErrorLike = {
-  message?: string;
+  code?: string | undefined;
+  message?: string | undefined;
   status?: number | undefined;
 };
+
+export function isExistingAccountError(error: AuthErrorLike | null | undefined) {
+  if (!error) {
+    return false;
+  }
+
+  const message = error.message?.toLowerCase() ?? "";
+  const code = error.code?.toLowerCase() ?? "";
+
+  return (
+    code === "user_already_exists" ||
+    message.includes("already registered") ||
+    message.includes("already exists") ||
+    message.includes("user already registered") ||
+    message.includes("email address is already registered")
+  );
+}
 
 export function getAuthErrorMessage(error: AuthErrorLike | null | undefined) {
   if (!error) {
@@ -16,8 +37,8 @@ export function getAuthErrorMessage(error: AuthErrorLike | null | undefined) {
     return "The email or password you entered is incorrect.";
   }
 
-  if (message.includes("already registered") || message.includes("already exists")) {
-    return "This email is already registered. Please sign in instead.";
+  if (isExistingAccountError(error)) {
+    return existingAccountMessage;
   }
 
   if (message.includes("email not confirmed")) {

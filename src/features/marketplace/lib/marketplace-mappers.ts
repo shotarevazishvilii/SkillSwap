@@ -48,17 +48,16 @@ export function buildMarketplaceUsers({
   });
 
   return profiles
+    .filter((profile) => Boolean(profile.full_name?.trim()))
     .map((profile) => ({
       avatarUrl: profile.avatar_url,
       bio: profile.bio,
-      fullName: profile.full_name ?? "SkillSwap member",
+      fullName: profile.full_name?.trim() ?? "SkillSwap member",
       id: profile.id,
       learningSkills: learningByUserId.get(profile.id) ?? [],
       location: profile.location,
       teachingSkills: teachingByUserId.get(profile.id) ?? [],
-      username: profile.username ?? "unknown",
+      username: profile.username?.trim() || "member",
     }))
-    .filter((user): user is MarketplaceUser =>
-      Boolean(user.fullName && user.username && user.teachingSkills.length > 0),
-    );
+    .filter((user): user is MarketplaceUser => user.teachingSkills.length > 0);
 }

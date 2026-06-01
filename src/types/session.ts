@@ -1,7 +1,7 @@
 import type { ProfileId, SkillId } from "@/types/profile";
 
 export type SessionId = string;
-export type SessionStatus = "requested" | "scheduled" | "completed" | "cancelled";
+export type SessionStatus = "scheduled" | "completed" | "cancelled";
 
 export interface SessionSummary {
   endsAt: string;
