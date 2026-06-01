@@ -17,7 +17,7 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
               Skill exchange starts here
             </h1>
             <p className="text-accent-foreground/80 mt-3 text-sm leading-6">
-              Authentication pages will reuse this accessible, responsive branded shell.
+              Sign in securely to teach what you know and learn what you want.
             </p>
           </div>
         </div>

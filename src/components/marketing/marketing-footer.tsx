@@ -10,7 +10,7 @@ export function MarketingFooter() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <SkillSwapLogo href="/" imageClassName="h-auto w-40" />
           <nav aria-label="Footer navigation" className="text-muted-foreground flex gap-4 text-sm">
-            <Link className="hover:text-foreground" href="/sign-in">
+            <Link className="hover:text-foreground" href="/auth/sign-in">
               Auth
             </Link>
             <Link className="hover:text-foreground" href="/dashboard">

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const marketingLinks = [
   { href: "/", label: "Home" },
-  { href: "/sign-in", label: "Sign in" },
+  { href: "/auth/sign-in", label: "Sign in" },
 ] as const;
 
 export function MarketingNavbar() {
@@ -28,7 +28,7 @@ export function MarketingNavbar() {
           ))}
         </div>
         <Button asChild size="sm">
-          <Link href="/sign-in">Get started</Link>
+          <Link href="/auth/sign-in">Get started</Link>
         </Button>
       </nav>
     </header>

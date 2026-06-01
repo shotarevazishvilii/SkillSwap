@@ -1,9 +1,10 @@
-import { Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { logoutAction } from "@/features/auth/actions";
 
 export function DashboardTopbar() {
   return (
@@ -26,9 +27,18 @@ export function DashboardTopbar() {
           <p className="text-muted-foreground text-xs">Future learner and mentor workspace</p>
         </div>
       </div>
-      <Avatar aria-label="User menu placeholder">
-        <AvatarFallback>SS</AvatarFallback>
-      </Avatar>
+      <div className="flex items-center gap-3">
+        <form action={logoutAction}>
+          <Button size="sm" type="submit" variant="ghost">
+            <LogOut aria-hidden="true" className="size-4" />
+            <span className="hidden sm:inline">Sign out</span>
+            <span className="sr-only sm:hidden">Sign out</span>
+          </Button>
+        </form>
+        <Avatar aria-label="User menu placeholder">
+          <AvatarFallback>SS</AvatarFallback>
+        </Avatar>
+      </div>
     </header>
   );
 }
