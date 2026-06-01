@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { getSupabasePublicConfig } from "@/lib/constants/env";
 import { getErrorMessage } from "@/lib/helpers/errors";

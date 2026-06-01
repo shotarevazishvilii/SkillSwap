@@ -1,8 +1,8 @@
-import type { Metadata, Viewport } from "next";
-
 import { SkipLink } from "@/components/shared/skip-link";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { createRootMetadata } from "@/lib/constants/metadata";
+
+import type { Metadata, Viewport } from "next";
 
 import "./globals.css";
 

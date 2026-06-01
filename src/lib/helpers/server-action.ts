@@ -1,6 +1,6 @@
-import { z } from "zod";
-
 import { getErrorMessage } from "@/lib/helpers/errors";
+
+import type { z } from "zod";
 
 export type ActionResult<TData> =
   | { data: TData; ok: true }
@@ -10,9 +10,15 @@ export function parseActionInput<TSchema extends z.ZodType>(schema: TSchema, inp
   const parsed = schema.safeParse(input);
 
   if (!parsed.success) {
+    const fieldErrors = Object.fromEntries(
+      Object.entries(parsed.error.flatten().fieldErrors).filter(
+        (entry): entry is [string, string[]] => Array.isArray(entry[1]),
+      ),
+    );
+
     return {
       error: "Invalid input",
-      fieldErrors: parsed.error.flatten().fieldErrors,
+      fieldErrors,
       ok: false,
     } satisfies ActionResult<never>;
   }

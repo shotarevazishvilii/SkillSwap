@@ -28,7 +28,8 @@ function emitLog(entry: LogEntry) {
 }
 
 function log(level: LogLevel, message: string, context?: LogContext) {
-  emitLog({ context, level, message, timestamp: new Date().toISOString() });
+  const baseEntry = { level, message, timestamp: new Date().toISOString() };
+  emitLog(context ? { ...baseEntry, context } : baseEntry);
 }
 
 export const logger = {

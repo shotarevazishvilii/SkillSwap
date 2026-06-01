@@ -1,13 +1,11 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
-import jsxA11y from "eslint-plugin-jsx-a11y";
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
 
 const eslintConfig = defineConfig([
   ...nextCoreWebVitals,
   ...nextTypescript,
-  jsxA11y.flatConfigs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
     plugins: {
@@ -46,14 +44,6 @@ const eslintConfig = defineConfig([
             order: "asc",
             caseInsensitive: true,
           },
-        },
-      ],
-      "react/jsx-sort-props": [
-        "warn",
-        {
-          callbacksLast: true,
-          shorthandFirst: true,
-          reservedFirst: true,
         },
       ],
     },

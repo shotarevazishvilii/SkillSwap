@@ -64,5 +64,8 @@
     "typescript": "^6.0.3"
   },
   "private": true,
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "postcss": "$postcss"
+  }
 }

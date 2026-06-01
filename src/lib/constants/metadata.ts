@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-
 import { APP_DESCRIPTION, APP_LOGO_PATH, APP_NAME } from "@/lib/constants/app";
 import { getPublicAppUrl } from "@/lib/constants/env";
+
+import type { Metadata } from "next";
 
 export function createRootMetadata(): Metadata {
   const appUrl = getPublicAppUrl();

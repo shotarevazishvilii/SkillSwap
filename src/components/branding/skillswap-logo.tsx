@@ -10,10 +10,7 @@ type SkillSwapLogoProps = {
   priority?: boolean;
 };
 
-function LogoImage({
-  imageClassName,
-  priority,
-}: Pick<SkillSwapLogoProps, "imageClassName" | "priority">) {
+function LogoImage({ imageClassName, priority }: { imageClassName?: string; priority: boolean }) {
   return (
     <Image
       priority={priority}
@@ -27,7 +24,9 @@ function LogoImage({
 }
 
 export function SkillSwapLogo({ className, href, imageClassName, priority }: SkillSwapLogoProps) {
-  const logo = <LogoImage imageClassName={imageClassName} priority={priority} />;
+  const logo = (
+    <LogoImage {...(imageClassName ? { imageClassName } : {})} priority={Boolean(priority)} />
+  );
 
   if (!href) {
     return <div className={cn("flex items-center", className)}>{logo}</div>;
