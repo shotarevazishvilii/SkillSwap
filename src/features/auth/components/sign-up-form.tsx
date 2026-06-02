@@ -24,6 +24,7 @@ import { signUpSchema, type SignUpInput } from "@/lib/validations/auth";
 export function SignUpForm() {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
+  const [showSignInLink, setShowSignInLink] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const form = useForm<SignUpInput>({
@@ -38,6 +39,7 @@ export function SignUpForm() {
 
   async function onSubmit(values: SignUpInput) {
     setFormError(null);
+    setShowSignInLink(false);
     setSuccessMessage(null);
 
     const supabase = createClient();
@@ -54,7 +56,16 @@ export function SignUpForm() {
     });
 
     if (error) {
-      setFormError(getAuthErrorMessage(error));
+      const message = getAuthErrorMessage(error);
+      setFormError(message);
+      setShowSignInLink(message.includes("already registered"));
+      return;
+    }
+
+    const identities = data.user?.identities ?? [];
+    if (data.user && identities.length === 0) {
+      setFormError("This email is already registered. Please sign in instead.");
+      setShowSignInLink(true);
       return;
     }
 
@@ -82,6 +93,11 @@ export function SignUpForm() {
       <form className="grid gap-4" noValidate onSubmit={form.handleSubmit(onSubmit)}>
         <AuthMessage message={successMessage} type="success" />
         <AuthMessage message={formError} type="error" />
+        {showSignInLink ? (
+          <Button asChild type="button" variant="outline">
+            <Link href="/auth/sign-in">Sign in instead</Link>
+          </Button>
+        ) : null}
         <FormField
           control={form.control}
           name="fullName"
