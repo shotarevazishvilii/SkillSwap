@@ -28,7 +28,7 @@ export const teachingSkillFormSchema = z.object({
 
 export const learningSkillFormSchema = z.object({
   skillId: z.string().uuid("Choose a skill"),
-  targetLevel: z.enum(["beginner", "intermediate", "advanced"]),
+  targetLevel: z.enum(["beginner", "intermediate", "advanced", "expert"]),
 });
 
 export type LearningSkillFormInput = z.infer<typeof learningSkillFormSchema>;

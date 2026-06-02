@@ -15,6 +15,7 @@ import {
 } from "@/features/matching/lib/compatibility";
 import type { MatchProfile, MatchRecommendation, MatchSkill } from "@/features/matching/types";
 import { SendRequestDialog } from "@/features/requests/components/send-request-dialog";
+import { getSupabaseErrorMessage } from "@/lib/helpers/supabase-errors";
 import { createClient } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/types";
 import { formatInitials } from "@/lib/utils";
@@ -234,10 +235,13 @@ export function MatchesPage() {
             .filter((match) => match.score > MINIMUM_VISIBLE_SCORE)
             .sort((left, right) => right.score - left.score),
         );
-      } catch {
+      } catch (error) {
         if (isMounted) {
           setMessage({
-            text: "We could not load matches right now. Please try again.",
+            text: getSupabaseErrorMessage(
+              error,
+              "We could not load matches right now. Please try again.",
+            ),
             type: "error",
           });
         }

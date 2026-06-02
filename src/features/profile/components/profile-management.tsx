@@ -21,7 +21,10 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { AuthMessage } from "@/features/auth/components/auth-message";
-import { getProfileErrorMessage } from "@/features/profile/lib/profile-errors";
+import {
+  getProfileErrorMessage,
+  getProfileLoadErrorMessage,
+} from "@/features/profile/lib/profile-errors";
 import { createClient } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/types";
 import { formatInitials } from "@/lib/utils";
@@ -59,7 +62,7 @@ type SkillItem = {
 };
 
 const teachingLevels = ["beginner", "intermediate", "advanced", "expert"] satisfies TeachingLevel[];
-const learningLevels = ["beginner", "intermediate", "advanced"] satisfies LearningLevel[];
+const learningLevels = ["beginner", "intermediate", "advanced", "expert"] satisfies LearningLevel[];
 
 function emptyToNull(value: string | undefined) {
   const trimmed = value?.trim() ?? "";

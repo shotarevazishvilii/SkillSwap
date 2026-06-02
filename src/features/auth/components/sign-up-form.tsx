@@ -17,7 +17,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { AuthMessage } from "@/features/auth/components/auth-message";
-import { getAuthErrorMessage } from "@/features/auth/lib/auth-errors";
+import {
+  existingAccountMessage,
+  getAuthErrorMessage,
+  isExistingAccountError,
+} from "@/features/auth/lib/auth-errors";
+import { syncProfileFullNameFromMetadata } from "@/lib/auth/sync-profile-from-metadata";
 import { createClient } from "@/lib/supabase/client";
 import { signUpSchema, type SignUpInput } from "@/lib/validations/auth";
 
@@ -43,12 +48,13 @@ export function SignUpForm() {
     setSuccessMessage(null);
 
     const supabase = createClient();
+    const trimmedFullName = values.fullName.trim();
     const emailRedirectTo = `${window.location.origin}/auth/callback?next=/dashboard`;
     const { data, error } = await supabase.auth.signUp({
       email: values.email,
       options: {
         data: {
-          full_name: values.fullName,
+          full_name: trimmedFullName,
         },
         emailRedirectTo,
       },
@@ -56,17 +62,26 @@ export function SignUpForm() {
     });
 
     if (error) {
-      const message = getAuthErrorMessage(error);
-      setFormError(message);
-      setShowSignInLink(message.includes("already registered"));
+      if (isExistingAccountError(error)) {
+        setFormError(existingAccountMessage);
+        setShowSignInLink(true);
+        return;
+      }
+
+      setFormError(getAuthErrorMessage(error));
       return;
     }
 
     const identities = data.user?.identities ?? [];
     if (data.user && identities.length === 0) {
-      setFormError("This email is already registered. Please sign in instead.");
+      setFormError(existingAccountMessage);
       setShowSignInLink(true);
       return;
+    }
+
+    if (data.user) {
+      await supabase.from("profiles").update({ full_name: trimmedFullName }).eq("id", data.user.id);
+      await syncProfileFullNameFromMetadata(supabase, data.user);
     }
 
     if (data.session) {
@@ -94,9 +109,14 @@ export function SignUpForm() {
         <AuthMessage message={successMessage} type="success" />
         <AuthMessage message={formError} type="error" />
         {showSignInLink ? (
-          <Button asChild type="button" variant="outline">
-            <Link href="/auth/sign-in">Sign in instead</Link>
-          </Button>
+          <p className="text-muted-foreground text-center text-sm">
+            <Link
+              className="text-primary font-medium underline-offset-4 hover:underline"
+              href="/auth/sign-in"
+            >
+              Sign in instead
+            </Link>
+          </p>
         ) : null}
         <FormField
           control={form.control}

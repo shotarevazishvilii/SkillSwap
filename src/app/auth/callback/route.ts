@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { syncProfileFullNameFromMetadata } from "@/lib/auth/sync-profile-from-metadata";
 import { createClient } from "@/lib/supabase/server";
 
 function getSafeNextPath(nextPath: string | null) {
@@ -20,6 +21,14 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await syncProfileFullNameFromMetadata(supabase, user);
+      }
+
       return NextResponse.redirect(new URL(next, requestUrl.origin));
     }
   }

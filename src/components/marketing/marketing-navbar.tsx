@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { SkillSwapLogo } from "@/components/branding/skillswap-logo";
@@ -11,15 +11,16 @@ import { logoutAction } from "@/features/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
-const publicLinks = [
+const unauthenticatedLinks = [
   { href: "/", label: "Home" },
-  { href: "/auth/sign-in", label: "Sign in" },
-  { href: "/auth/sign-up", label: "Sign up" },
+  { href: "/auth/sign-in", label: "Sign In" },
+  { href: "/auth/sign-up", label: "Sign Up" },
 ] as const;
+
+const authenticatedLinks = [{ href: "/dashboard", label: "Dashboard" }] as const;
 
 export function MarketingNavbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
@@ -54,7 +55,7 @@ export function MarketingNavbar() {
     };
   }, []);
 
-  const visibleLinks = isAuthenticated ? [{ href: "/dashboard", label: "Dashboard" }] : publicLinks;
+  const visibleLinks = isAuthenticated ? authenticatedLinks : unauthenticatedLinks;
 
   return (
     <header className="bg-background/90 sticky top-0 z-40 border-b backdrop-blur">
@@ -63,48 +64,39 @@ export function MarketingNavbar() {
         className="max-w-wide mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
       >
         <SkillSwapLogo href="/" imageClassName="h-auto w-40" />
-        <div className="ml-auto hidden items-center gap-2 md:flex">
-          {visibleLinks.map((link) => {
-            const isActive = pathname === link.href;
-
-            return (
-              <Link
-                key={link.href}
-                aria-current={isActive ? "page" : undefined}
-                className={cn(
-                  "hover:text-foreground rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground",
-                )}
-                href={link.href}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:gap-3">
           {isCheckingAuth ? (
-            <Skeleton className="h-9 w-24" />
-          ) : isAuthenticated ? (
-            <form action={logoutAction}>
-              <Button size="sm" type="submit" variant="outline">
-                Logout
-              </Button>
-            </form>
+            <Skeleton className="h-9 w-48" />
           ) : (
-            <Button asChild className="md:hidden" size="sm">
-              <Link href="/auth/sign-up">Sign up</Link>
-            </Button>
+            <>
+              <div className="flex flex-wrap items-center justify-end gap-1 sm:gap-2">
+                {visibleLinks.map((link) => {
+                  const isActive = pathname === link.href;
+
+                  return (
+                    <Link
+                      key={link.href}
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "hover:text-foreground rounded-md px-2 py-2 text-sm font-medium transition-colors sm:px-3",
+                        isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground",
+                      )}
+                      href={link.href}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </div>
+              {isAuthenticated ? (
+                <form action={logoutAction}>
+                  <Button size="sm" type="submit" variant="outline">
+                    Logout
+                  </Button>
+                </form>
+              ) : null}
+            </>
           )}
-          <Button
-            className="md:hidden"
-            size="sm"
-            type="button"
-            variant="ghost"
-            onClick={() => router.push(isAuthenticated ? "/dashboard" : "/auth/sign-in")}
-          >
-            {isAuthenticated ? "Dashboard" : "Sign in"}
-          </Button>
         </div>
       </nav>
     </header>

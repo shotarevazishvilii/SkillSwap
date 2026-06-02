@@ -82,8 +82,6 @@ export function MarketplacePage() {
             .from("profiles")
             .select("id, full_name, username, avatar_url, bio, location")
             .neq("id", user.id)
-            .not("full_name", "is", null)
-            .not("username", "is", null)
             .order("full_name"),
           supabase.from("skills").select("id, name, slug").order("name"),
         ]);
@@ -140,9 +138,9 @@ export function MarketplacePage() {
             teachingRows: (teachingResult.data ?? []) as MarketplaceTeachingSkillRow[],
           }),
         );
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setErrorMessage(getMarketplaceErrorMessage());
+          setErrorMessage(getMarketplaceErrorMessage(error));
         }
       } finally {
         if (isMounted) {

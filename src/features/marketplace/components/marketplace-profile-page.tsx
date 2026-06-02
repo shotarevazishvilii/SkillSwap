@@ -128,9 +128,9 @@ export function MarketplaceProfilePage() {
         }
 
         setProfile(users[0] ?? null);
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setErrorMessage(getMarketplaceErrorMessage());
+          setErrorMessage(getMarketplaceErrorMessage(error));
         }
       } finally {
         if (isMounted) {

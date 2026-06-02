@@ -1,23 +1,10 @@
-type SupabaseErrorLike = {
-  code?: string | undefined;
-  message?: string | undefined;
-};
-
-function normalizeError(error: unknown): SupabaseErrorLike {
-  if (error && typeof error === "object") {
-    const maybeError = error as { code?: unknown; message?: unknown };
-
-    return {
-      code: typeof maybeError.code === "string" ? maybeError.code : undefined,
-      message: typeof maybeError.message === "string" ? maybeError.message : undefined,
-    };
-  }
-
-  return {};
-}
+import {
+  getSupabaseErrorMessage,
+  normalizeSupabaseError,
+} from "@/lib/helpers/supabase-errors";
 
 export function getProfileErrorMessage(error: unknown) {
-  const normalizedError = normalizeError(error);
+  const normalizedError = normalizeSupabaseError(error);
   const message = normalizedError.message?.toLowerCase() ?? "";
 
   if (
@@ -32,13 +19,9 @@ export function getProfileErrorMessage(error: unknown) {
     return "This skill is already on your profile.";
   }
 
-  if (message.includes("network")) {
-    return "Network error. Check your connection and try again.";
-  }
+  return getSupabaseErrorMessage(error, "We could not save your changes. Please try again.");
+}
 
-  if (message.includes("permission") || message.includes("row-level security")) {
-    return "You do not have permission to update this profile.";
-  }
-
-  return "We could not save your changes. Please try again.";
+export function getProfileLoadErrorMessage(error: unknown) {
+  return getSupabaseErrorMessage(error, "We could not load your profile right now. Please try again.");
 }

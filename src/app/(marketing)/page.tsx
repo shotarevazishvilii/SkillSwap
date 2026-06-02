@@ -41,8 +41,8 @@ const howItWorksSteps = [
 
 const features = [
   {
-    description: "Find compatible learning partners.",
-    title: "AI Matching",
+    description: "Find compatible learning partners with intelligent skill matching.",
+    title: "Smart Matching",
     icon: Sparkles,
   },
   {

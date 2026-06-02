@@ -9,6 +9,7 @@ import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getSupabaseErrorMessage } from "@/lib/helpers/supabase-errors";
 import { createClient } from "@/lib/supabase/client";
 import type { Database, Tables } from "@/lib/supabase/types";
 import { formatDate } from "@/lib/utils";
@@ -299,9 +300,14 @@ export function LearningDashboard() {
             status: session.status,
           })),
         });
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setErrorMessage("We could not load your dashboard right now. Please try again.");
+          setErrorMessage(
+            getSupabaseErrorMessage(
+              error,
+              "We could not load your dashboard right now. Please try again.",
+            ),
+          );
         }
       } finally {
         if (isMounted) {
