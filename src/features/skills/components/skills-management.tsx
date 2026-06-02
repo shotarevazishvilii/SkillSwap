@@ -19,7 +19,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuthMessage } from "@/features/auth/components/auth-message";
-import { getProfileErrorMessage } from "@/features/profile/lib/profile-errors";
+import {
+  getProfileErrorMessage,
+  getProfileLoadErrorMessage,
+} from "@/features/profile/lib/profile-errors";
+import { getSupabaseSetupHelpMessage } from "@/lib/helpers/supabase-errors";
 import { createClient } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/types";
 import {
@@ -106,6 +110,7 @@ export function SkillsManagement() {
   const [learningSkills, setLearningSkills] = useState<UserSkill[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [catalogUnavailable, setCatalogUnavailable] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: "error" | "success" } | null>(null);
   const [removingSkillId, setRemovingSkillId] = useState<string | null>(null);
 
@@ -142,6 +147,7 @@ export function SkillsManagement() {
     async function loadSkills() {
       setIsLoading(true);
       setMessage(null);
+      setCatalogUnavailable(false);
 
       try {
         const supabase = createClient();
@@ -195,9 +201,18 @@ export function SkillsManagement() {
         setSkills(skillData);
         setTeachingSkills(teachingData.map((row) => mapTeachingSkill(row, skillMap)));
         setLearningSkills(learningData.map((row) => mapLearningSkill(row, skillMap)));
+
+        if (skillData.length === 0) {
+          setCatalogUnavailable(true);
+          setMessage({
+            text: "The skill catalog is empty. Run the Supabase migrations in supabase/migrations/ to seed skills.",
+            type: "error",
+          });
+        }
       } catch (error) {
         if (isMounted) {
-          setMessage({ text: getProfileErrorMessage(error), type: "error" });
+          setCatalogUnavailable(true);
+          setMessage({ text: getProfileLoadErrorMessage(error), type: "error" });
         }
       } finally {
         if (isMounted) {
@@ -345,6 +360,10 @@ export function SkillsManagement() {
       </div>
 
       <AuthMessage message={message?.text ?? null} type={message?.type ?? "success"} />
+
+      {catalogUnavailable && !isLoading ? (
+        <p className="text-muted-foreground text-sm">{getSupabaseSetupHelpMessage()}</p>
+      ) : null}
 
       {isLoading ? (
         <SkillsLoadingState />

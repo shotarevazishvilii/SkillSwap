@@ -138,9 +138,9 @@ export function MarketplacePage() {
             teachingRows: (teachingResult.data ?? []) as MarketplaceTeachingSkillRow[],
           }),
         );
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setErrorMessage(getMarketplaceErrorMessage());
+          setErrorMessage(getMarketplaceErrorMessage(error));
         }
       } finally {
         if (isMounted) {

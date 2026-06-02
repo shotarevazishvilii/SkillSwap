@@ -1,3 +1,5 @@
+import { getSupabaseErrorMessage } from "@/lib/helpers/supabase-errors";
+
 export function getLearningRequestErrorMessage(error: unknown) {
   if (error && typeof error === "object") {
     const maybeError = error as { code?: unknown; message?: unknown };
@@ -11,11 +13,7 @@ export function getLearningRequestErrorMessage(error: unknown) {
     if (message.includes("permission") || message.includes("row-level security")) {
       return "You do not have permission to update this request.";
     }
-
-    if (message.includes("network")) {
-      return "Network error. Check your connection and try again.";
-    }
   }
 
-  return "We could not complete this request. Please try again.";
+  return getSupabaseErrorMessage(error, "We could not complete this request. Please try again.");
 }

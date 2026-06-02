@@ -94,7 +94,7 @@ export function DashboardTopbar() {
           </SheetTrigger>
           <SheetContent className="p-0" side="left">
             <SheetTitle className="sr-only">Dashboard navigation</SheetTitle>
-            <DashboardSidebar className="flex min-h-full border-r-0" />
+            <DashboardSidebar className="flex min-h-full border-r-0" closeOnNavigate />
           </SheetContent>
         </Sheet>
         <div className="min-w-0">
